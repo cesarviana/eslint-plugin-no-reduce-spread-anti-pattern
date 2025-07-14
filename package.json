@@ -4,27 +4,34 @@
   "description": "ESLint v9 plugin to disallow bad usage patterns of the spread operator.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "mocha --require ts-node/register tests/**/*.ts",
     "lint": "eslint . --ext .ts",
     "prepare": "yarn build"
   },
-  "keywords": ["eslint", "eslintplugin", "eslint-plugin", "spread", "bad-pattern"],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "spread",
+    "bad-pattern"
+  ],
   "author": "",
   "license": "MIT",
   "peerDependencies": {
     "eslint": ">=9.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "^6.0.0",
-    "@types/eslint": "^8.56.0",
+    "@typescript-eslint/parser": "8.36.0",
+    "@types/eslint": "9.6.1",
     "@types/mocha": "^10.0.0",
-    "@types/node": "^20.0.0",
+    "@types/node": "24.0.13",
     "eslint": "^9.0.0",
-    "eslint-plugin-jest": "^27.6.0",
-    "mocha": "^10.0.0",
+    "mocha": "11.7.1",
     "ts-node": "^10.0.0",
     "typescript": "^5.4.0"
   }
