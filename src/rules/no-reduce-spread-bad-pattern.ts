@@ -1,4 +1,4 @@
-const rule = {
+export default {
   meta: {
     docs: {
       description: "Disallow using the spread operator in Array.reduce",
@@ -13,39 +13,23 @@ const rule = {
   create(context: any) {
     return {
       CallExpression(node: any) {
-        if (
-          node.callee?.type === "MemberExpression" &&
-          node.callee.property.type === "Identifier" &&
-          node.callee.property.name === "reduce" &&
-          node.arguments.length > 0
-        ) {
+        if (_isReduce(node)) {
           const callback = node.arguments[0];
-          if (
-            callback?.type === "FunctionExpression" ||
-            callback?.type === "ArrowFunctionExpression" ||
-            callback?.body
-          ) {
-            // Find all return statements in the callback
-            const returns: any[] = [];
-            function findReturns(n: any) {
-              if (!n) return;
-              if (n.type === "ReturnStatement" && n.argument) {
-                returns.push(n.argument);
-              } else if (n.type === "BlockStatement" && n.body) {
-                n.body.forEach(findReturns);
-              } else if (Array.isArray(n)) {
-                n.forEach(findReturns);
-              }
+          const acc = callback.params[0];
+          const returns = _findReturns(callback.body);
+          for (const ret of returns) {
+            if (_isArrayWithSomeSpreadElement(ret, acc)) {
+              context.report({ node: ret, messageId: "badReduceSpread" });
             }
-            findReturns(callback.body);
-            for (const ret of returns) {
-              if (
-                ret.type === "ArrayExpression" &&
-                ret.elements.some(
-                  (el: any) => el && el.type === "SpreadElement"
-                )
-              ) {
-                context.report({ node: ret, messageId: "badReduceSpread" });
+            if (ret.type === "ObjectExpression") {
+              for (const prop of ret.properties) {
+                const isTheAccumulator = prop.argument?.name === acc.name;
+                if (prop.type === "SpreadElement" && isTheAccumulator) {
+                  context.report({
+                    node: prop,
+                    messageId: "badReduceSpread",
+                  });
+                }
               }
             }
           }
@@ -55,4 +39,41 @@ const rule = {
   },
 };
 
-export default rule;
+function _isReduce(node: any) {
+  return (
+    node.callee?.type === "MemberExpression" &&
+    node.callee.property.type === "Identifier" &&
+    node.callee.property.name === "reduce" &&
+    node.arguments.length > 0
+  );
+}
+
+function _isArrayWithSomeSpreadElement(ret: any, acc: any) {
+  return (
+    ret.type === "ArrayExpression" &&
+    ret.elements.some((el: any) => {
+      const isSpread = el?.type === "SpreadElement";
+      const isTheAccumulator = el?.argument?.name === acc.name;
+      return isSpread && isTheAccumulator;
+    })
+  );
+}
+
+function _findReturns(node: any) {
+  const returns: any[] = [];
+  function _find(node: any) {
+    if (!node) return;
+    if (node.type === "ReturnStatement" && node.argument) {
+      returns.push(node.argument);
+    } else if (node.type === "BlockStatement" && node.body) {
+      node.body.forEach(_find);
+    } else if (node.type === "IfStatement" && node.consequent) {
+      _find(node.consequent);
+    }
+  }
+  _find(node);
+  if (returns.length === 0) {
+    returns.push(node);
+  }
+  return returns;
+}

@@ -6,62 +6,60 @@ import rule from "../src/rules/no-reduce-spread-bad-pattern";
 const ruleTester = new RuleTester();
 
 describe("no-reduce-spread-bad-pattern", () => {
+  describe("arrays", () => {
+    it("is invalid when spread operator in array", () => {
+      _isInvalid("arr.reduce((acc, val) => { return [...acc, ...val] }, []);");
+    });
+
+    it("is invalid when spread operator in array in function with multiple returns", () => {
+      _isInvalid(
+        `arr.reduce((acc, val) => { 
+          if (val) { return [...acc, ...val] }
+          return acc 
+         }, []);
+        `
+      );
+    });
+
+    it('is invalid when spread operator in array, without "return"', () => {
+      _isInvalid("arr.reduce((acc, val) => [...acc, val], []);");
+    });
+
+    it("is valid if spread is in other element than accumulator", () => {
+      _isValid("arr.reduce((acc, val) => [...val], []);");
+    });
+  });
+
+  describe("objects", () => {
+    it("is invalid when spread operator in object", () => {
+      _isInvalid("obj.reduce((acc, val) => ({ ...acc, ...val }), {});");
+    });
+
+    it("is valid if spread is in other element than accumulator", () => {
+      _isValid("obj.reduce((acc, val) => ({ ...val }), {});");
+    });
+
+    it('is invalid when spread operator in object, without "return"', () => {
+      _isInvalid("obj.reduce((acc, val) => ({ ...acc, ...val }), {});");
+    });
+  });
+});
+
+function _isValid(code: string) {
   ruleTester.run("no-reduce-spread-bad-pattern", rule, {
-    valid: [
-      // {
-      //   code: "const arr = [1, 2, 3];",
-      // },
-      // {
-      //   code: "function foo(a, b) { return a + b; }",
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => acc.concat(val), []);",
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => { acc.push(val); return acc; }, []);",
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => ({ ...acc, ...val }), {});",
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => ({ ...acc, foo: val }), {});",
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => ({ bar: 1, ...acc }), {});",
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => ({ ...val, ...acc }), {});",
-      // },
-    ],
+    valid: [{ code }],
+    invalid: [],
+  });
+}
+
+function _isInvalid(code: string) {
+  ruleTester.run("no-reduce-spread-bad-pattern", rule, {
+    valid: [],
     invalid: [
-      // {
-      //   code: "arr.reduce((acc, val) => [...acc, ...val], []);",
-      //   errors: [{ messageId: "badReduceSpread" }],
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => [0, ...acc, ...val], []);",
-      //   errors: [{ messageId: "badReduceSpread" }],
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => [...acc, val], []);",
-      //   errors: [{ messageId: "badReduceSpread" }],
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => [...val, ...acc], []);",
-      //   errors: [{ messageId: "badReduceSpread" }],
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => ({ ...acc, ...val, foo: 1 }), {});",
-      //   errors: [{ messageId: "badReduceSpread" }],
-      // },
-      // {
-      //   code: "arr.reduce((acc, val) => ({ ...acc, bar: val, ...val }), {});",
-      //   errors: [{ messageId: "badReduceSpread" }],
-      // },
       {
-        code: "arr.reduce((acc, val) => { return { ...acc, ...val }; }, {});",
+        code,
         errors: [{ messageId: "badReduceSpread" }],
       },
     ],
   });
-});
+}
