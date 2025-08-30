@@ -11,23 +11,25 @@ export default {
     schema: [],
   },
   create(context: any) {
+    const messageId = "badReduceSpread";
     return {
       CallExpression(node: any) {
         if (_isReduce(node)) {
           const callback = node.arguments[0];
-          const acc = callback.params[0];
+          const accumulator = callback.params[0];
           const returns = _findReturns(callback.body);
-          for (const ret of returns) {
-            if (_isArrayWithSomeSpreadElement(ret, acc)) {
-              context.report({ node: ret, messageId: "badReduceSpread" });
+          for (const _return of returns) {
+            if (_isArrayWithSomeSpreadElement(_return, accumulator)) {
+              context.report({ node: _return, messageId });
             }
-            if (ret.type === "ObjectExpression") {
-              for (const prop of ret.properties) {
-                const isTheAccumulator = prop.argument?.name === acc.name;
+            if (_return.type === "ObjectExpression") {
+              for (const prop of _return.properties) {
+                const isTheAccumulator =
+                  prop.argument?.name === accumulator.name;
                 if (prop.type === "SpreadElement" && isTheAccumulator) {
                   context.report({
                     node: prop,
-                    messageId: "badReduceSpread",
+                    messageId,
                   });
                 }
               }

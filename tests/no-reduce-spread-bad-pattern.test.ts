@@ -28,6 +28,12 @@ describe("no-reduce-spread-bad-pattern", () => {
     it("is valid if spread is in other element than accumulator", () => {
       _isValid("arr.reduce((acc, val) => [...val], []);");
     });
+
+    it("is invalid when spread operator is in if condition", () => {
+      _isInvalid(
+        "arr.reduce((acc, val) => { if (condition1) return [...acc, val]; else if (condition2) return [...acc]; else return acc; }, []);"
+      );
+    });
   });
 
   describe("objects", () => {
@@ -42,6 +48,10 @@ describe("no-reduce-spread-bad-pattern", () => {
     it('is invalid when spread operator in object, without "return"', () => {
       _isInvalid("obj.reduce((acc, val) => ({ ...acc, ...val }), {});");
     });
+  });
+
+  it('is valid for non "reduce" calls', () => {
+    _isValid("obj.map((acc, val) => ({ ...acc, ...val }), {});");
   });
 });
 
