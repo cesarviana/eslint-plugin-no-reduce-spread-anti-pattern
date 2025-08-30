@@ -1,11 +1,11 @@
 "use strict";
 
 import { RuleTester } from "eslint";
-import rule from "../src/rules/no-reduce-spread-bad-pattern";
+import rule from "../src/rules/no-reduce-spread-anti-pattern";
 
 const ruleTester = new RuleTester();
 
-describe("no-reduce-spread-bad-pattern", () => {
+describe("no-reduce-spread-anti-pattern", () => {
   describe("arrays", () => {
     it("is invalid when spread operator in array", () => {
       _isInvalid("arr.reduce((acc, val) => { return [...acc, ...val] }, []);");
@@ -56,14 +56,14 @@ describe("no-reduce-spread-bad-pattern", () => {
 });
 
 function _isValid(code: string) {
-  ruleTester.run("no-reduce-spread-bad-pattern", rule, {
+  ruleTester.run("no-reduce-spread-anti-pattern", rule, {
     valid: [{ code }],
     invalid: [],
   });
 }
 
 function _isInvalid(code: string) {
-  ruleTester.run("no-reduce-spread-bad-pattern", rule, {
+  ruleTester.run("no-reduce-spread-anti-pattern", rule, {
     valid: [],
     invalid: [
       {

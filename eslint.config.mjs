@@ -1,6 +1,6 @@
 import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
-import noReduceSpreadBadPattern from "./dist";
+import noReduceSpreadAntiPattern from "./dist";
 
 export default defineConfig([
   js.configs.recommended,
@@ -10,10 +10,10 @@ export default defineConfig([
       parser: "@typescript-eslint/parser",
     },
     plugins: {
-      "no-reduce-spread-bad-pattern": noReduceSpreadBadPattern,
+      "no-reduce-spread-anti-pattern": noReduceSpreadAntiPattern,
     },
     rules: {
-      ...noReduceSpreadBadPattern.configs.recommended.rules,
+      ...noReduceSpreadAntiPattern.configs.recommended.rules,
     },
   },
 ]);

@@ -1,4 +1,4 @@
-# ESLint Plugin: no-reduce-spread-bad-pattern
+# ESLint Plugin: no-reduce-spread-anti-pattern
 
 This is an ESLint v9 plugin that provides a rule to disallow bad patterns while combining reduce + spread.
 
@@ -23,16 +23,16 @@ Add this plugin to your ESLint configuration:
 
 ```js
 // eslint.config.js
-import noReduceSpreadBadPattern from "eslint-plugin-no-reduce-spread-bad-pattern";
+import noReduceSpreadAntiPattern from "eslint-plugin-no-reduce-spread-anti-pattern";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
     plugins: {
-      "no-reduce-spread-bad-pattern": noReduceSpreadBadPattern,
+      "no-reduce-spread-anti-pattern": noReduceSpreadAntiPattern,
     },
     rules: {
-      "no-reduce-spread-bad-pattern/no-reduce-spread-bad-pattern": "error",
+      "no-reduce-spread-anti-pattern/no-reduce-spread-anti-pattern": "error",
     },
   },
 ]);
@@ -41,11 +41,11 @@ export default defineConfig([
 If you want to use a shareable config (if provided by this plugin):
 
 ```js
-import noSpreadBadPattern from "eslint-plugin-no-reduce-spread-bad-pattern";
+import noSpreadAntiPattern from "eslint-plugin-no-reduce-spread-anti-pattern";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  noSpreadBadPattern.configs?.recommended,
+  noSpreadAntiPattern.configs?.recommended,
 ]);
 ```
 
