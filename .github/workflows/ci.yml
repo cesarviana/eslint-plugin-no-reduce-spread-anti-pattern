@@ -60,3 +60,31 @@ jobs:
         echo "Package contents:"
         tar -tzf "$(yarn pack --filename eslint-plugin-test.tgz)" | head -20
         rm -f eslint-plugin-test.tgz
+
+  # Publish to npm when pushing to main branch
+  publish:
+    runs-on: ubuntu-latest
+    needs: [test, package-check]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'yarn'
+        registry-url: 'https://registry.npmjs.org'
+    
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    
+    - name: Build project
+      run: yarn build
+    
+    - name: Publish to npm
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
