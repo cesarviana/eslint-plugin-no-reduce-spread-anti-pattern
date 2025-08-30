@@ -1,6 +1,6 @@
 import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
-import noReduceSpreadAntiPattern from "./dist";
+import noReduceSpreadAntiPattern from "./dist/index.js";
 
 export default defineConfig([
   js.configs.recommended,

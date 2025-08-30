@@ -1,5 +1,7 @@
 # ESLint Plugin: no-reduce-spread-anti-pattern
 
+[![CI](https://github.com/cesarviana/eslint-plugin-no-reduce-spread-anti-pattern/actions/workflows/ci.yml/badge.svg)](https://github.com/cesarviana/eslint-plugin-no-reduce-spread-anti-pattern/actions/workflows/ci.yml)
+
 This is an ESLint v9 plugin that provides a rule to disallow bad patterns while combining reduce + spread.
 
 ## Getting Started
@@ -16,6 +18,17 @@ This is an ESLint v9 plugin that provides a rule to disallow bad patterns while 
    ```sh
    yarn test
    ```
+
+## Development
+
+This project uses GitHub Actions for continuous integration. The CI workflow:
+- Tests the project on Node.js versions 18.x, 20.x, and 22.x
+- Runs linting, building, and tests
+- Validates package contents before publishing
+
+The workflow runs automatically on:
+- Push to the `main` branch
+- Pull requests to the `main` branch
 
 ## Usage (ESLint 9+ Flat Config)
 
