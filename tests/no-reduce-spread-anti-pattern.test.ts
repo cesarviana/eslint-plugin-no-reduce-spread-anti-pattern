@@ -53,6 +53,22 @@ describe("no-reduce-spread-anti-pattern", () => {
   it('is valid for non "reduce" calls', () => {
     _isValid("obj.map((acc, val) => ({ ...acc, ...val }), {});");
   });
+
+  it('supports lodash "reduce" calls', () => {
+    _isValid(`
+      const newObjUserTypeMap = _.reduce(
+        userTypeChanged,
+        (acc, u) => {
+          acc.set(u.object, {
+            userType: u.userType,
+            recipientField: u.recipientField || null
+          });
+          return acc;
+        },
+        new Map()
+      );
+      `);
+  });
 });
 
 function _isValid(code: string) {
