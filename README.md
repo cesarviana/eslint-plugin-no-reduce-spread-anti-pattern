@@ -3,6 +3,11 @@
 [![CI](https://github.com/cesarviana/eslint-plugin-no-reduce-spread-anti-pattern/actions/workflows/ci.yml/badge.svg)](https://github.com/cesarviana/eslint-plugin-no-reduce-spread-anti-pattern/actions/workflows/ci.yml)
 
 This is an ESLint v9 plugin that provides a rule to disallow bad patterns while combining reduce + spread.
+To add it to your project, run
+
+```sn
+yarn add no-reduce-spread-anti-pattern
+```
 
 ## Getting Started
 
