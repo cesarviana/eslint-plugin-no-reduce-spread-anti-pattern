@@ -15,9 +15,10 @@ export default {
     return {
       CallExpression(node: any) {
         if (_isReduce(node)) {
-          const { callback, accumulator } =
-            _extractCallbackAndAccumulator(node);
-          if (!callback || !accumulator) return;
+          const callback = _extractCallback(node);
+          if (!callback) return;
+          const accumulator = callback.params?.[0];
+          if (!accumulator) return;
           const returns = _findReturns(callback.body);
           for (const _return of returns) {
             if (_isArrayWithSomeSpreadElement(_return, accumulator)) {
@@ -42,24 +43,15 @@ export default {
   },
 };
 
-function _extractCallbackAndAccumulator(node: any) {
+function _extractCallback(node: any): any {
   const [arg1, arg2] = node.arguments;
   if (_isFunction(arg1)) {
-    return {
-      callback: arg1,
-      accumulator: arg2,
-    };
+    return arg1;
   }
   if (_isFunction(arg2)) {
-    return {
-      callback: arg2,
-      accumulator: arg1,
-    };
+    return arg2;
   }
-  return {
-    callback: null,
-    accumulator: null,
-  };
+  null;
 }
 
 function _isFunction(node: any) {

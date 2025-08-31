@@ -68,6 +68,17 @@ describe("no-reduce-spread-anti-pattern", () => {
         new Map()
       );
       `);
+
+    _isInvalid(`
+      const usersList = _.reduce(
+        users,
+        (users, user) => {
+          return [...users, ...u];
+        },
+        []
+      );
+      `
+    )
   });
 });
 
