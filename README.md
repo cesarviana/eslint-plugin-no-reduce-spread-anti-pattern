@@ -6,7 +6,7 @@ This is an ESLint v9 plugin that provides a rule to disallow bad patterns while 
 To add it to your project, run
 
 ```sn
-yarn add --dev no-reduce-spread-anti-pattern
+yarn add --dev eslint-plugin-no-reduce-spread-anti-pattern
 ```
 
 ## Getting Started
