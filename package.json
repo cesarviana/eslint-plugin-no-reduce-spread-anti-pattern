@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-no-reduce-spread-anti-pattern",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ESLint v9 plugin to disallow bad usage patterns of the spread operator.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
